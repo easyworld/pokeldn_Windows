@@ -3,7 +3,6 @@ import base64
 import glob
 import json
 import os
-import re
 import subprocess
 import sys
 import threading
@@ -32,7 +31,7 @@ def _command() -> list[str]:
     for path in found:
         if os.path.isfile(path):
             return [path]
-    raise BuilderError("The Pokemon builder is missing from this copy of the app.")
+    raise BuilderError("当前程序缺少宝可梦生成组件。")
 
 
 class Service:
@@ -52,10 +51,10 @@ class Service:
             self.proc.stdin.flush()
             line = self.proc.stdout.readline()
         if not line:
-            raise BuilderError("The Pokemon builder stopped.")
+            raise BuilderError("宝可梦生成组件已停止运行。")
         reply = json.loads(line)
         if not reply.get("ok"):
-            raise BuilderError(reply.get("error", "unknown error"))
+            raise BuilderError(reply.get("error", "未知错误"))
         return reply
 
     def species(self, game: str) -> list[dict]:
@@ -94,7 +93,7 @@ class Service:
             data = pokemon.build_offer(ZA_OFFER_HEADER, data)
         folder = POKEMON / game
         folder.mkdir(parents=True, exist_ok=True)
-        name = re.sub(r"[^A-Za-z0-9]+", "", reply["species"]) or "pokemon"
+        name = f"pokemon-{reply['species_id']}"
         path = folder / f"{name}-{time.strftime('%Y%m%d-%H%M%S')}.{EXTENSIONS[game]}"
         path.write_bytes(data)
         return str(path)
@@ -104,9 +103,9 @@ SERVICE = Service()
 
 
 def summary(info: dict) -> str:
-    parts = [info["species"], f"level {info['level']}"]
+    parts = [info["species"], f"等级 {info['level']}"]
     if info.get("shiny"):
-        parts.append("shiny")
+        parts.append("异色")
     if info.get("nickname") and info["nickname"].lower() != info["species"].lower():
         parts.append(f"'{info['nickname']}'")
     parts += [info.get("nature", ""), info.get("ball", "")]

@@ -39,4 +39,4 @@ class App:
 
     async def copy(self, value: str) -> None:
         await self.clipboard.set(value)
-        self.page.show_dialog(ft.SnackBar(ft.Text("Copied"), duration=1500))
+        self.page.show_dialog(ft.SnackBar(ft.Text("已复制"), duration=1500))

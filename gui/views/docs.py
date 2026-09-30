@@ -10,6 +10,22 @@ from gui.paths import ROOT
 DOCS = os.path.join(ROOT, "docs")
 GUIDE = os.path.join(ROOT, "gui", "guide.md")
 SITE = "https://decryptu.github.io/pokeldn/"
+TITLES = {
+    "index.md": "首页", "hardware.md": "硬件与配置", "hardware_adapters.md": "适配器",
+    "hardware_switch_keys.md": "树莓派上的 Switch 密钥", "hardware_esp32.md": "ESP32 无线设备",
+    "hardware_raspberry_pi.md": "树莓派主机", "ldn.md": "无线通信层", "pia.md": "Pia 通信层",
+    "switch_re.md": "Switch 游戏逆向分析", "frlg.md": "火红／叶绿",
+    "frlg_rom_map.md": "ROM 地址映射", "frlg_rom.md": "游戏机代码",
+    "frlg_leafgreen.md": "叶绿", "frlg_rng.md": "随机数生成器",
+    "frlg_host.md": "主机实现", "frlg_link.md": "连接协议",
+    "frlg_gift.md": "神秘礼物", "lgpe.md": "Let's Go! 皮卡丘／伊布",
+    "lgpe_session.md": "游戏卡带与会话", "swsh.md": "剑／盾",
+    "swsh_session.md": "游戏卡带与会话", "swsh_trade.md": "连接交换",
+    "swsh_gift.md": "神秘礼物菜单", "swsh_protocol.md": "同步框架",
+    "bdsp.md": "晶灿钻石／明亮珍珠", "bdsp_trade.md": "联合厅交换",
+    "bdsp_session.md": "加入与 Pia 通信层", "bdsp_protocol.md": "游戏协议",
+    "pla.md": "传说 阿尔宙斯", "sv.md": "朱／紫", "za.md": "传说 Z-A",
+}
 
 
 @dataclass
@@ -32,13 +48,16 @@ def split_front_matter(text: str) -> tuple[dict, str]:
 def pages() -> list[Page]:
     """The docs site's navigation: front matter titles, parents and nav_order."""
     found = []
+    by_title = {}
     for name in sorted(os.listdir(DOCS)):
         if name.endswith(".md"):
             with open(os.path.join(DOCS, name), encoding="utf-8") as f:
                 meta, _ = split_front_matter(f.read())
             if meta.get("title"):
-                found.append(Page(name, meta["title"], int(meta.get("nav_order", 99)), meta.get("parent", "")))
-    by_title = {p.title: p for p in found}
+                page = Page(name, TITLES.get(name, meta["title"]),
+                            int(meta.get("nav_order", 99)), meta.get("parent", ""))
+                found.append(page)
+                by_title[meta["title"]] = page
     roots = []
     for p in sorted(found, key=lambda p: (p.order, p.title)):
         (by_title[p.parent].children if p.parent in by_title else roots).append(p)
@@ -74,9 +93,9 @@ class DocsView:
                                   expand=True)
         self.control = ft.Row([
             t.panel(ft.Column([
-                t.panel_header("Docs", t.icon_button(ft.Icons.OPEN_IN_NEW_ROUNDED,
+                t.panel_header("文档", t.icon_button(ft.Icons.OPEN_IN_NEW_ROUNDED,
                                                      lambda e: self.app.page.run_task(self.app.open_url, SITE),
-                                                     "Open the docs website")),
+                                                     "打开文档网站")),
                 self.nav,
             ], spacing=0, expand=True), width=270),
             t.panel(self.scroll, expand=True),
@@ -102,8 +121,8 @@ class DocsView:
             self.control.update()
 
     def render_nav(self) -> None:
-        rows = [self.row("Start here", "guide", 0)]
-        rows.append(ft.Container(t.text("DOCUMENTATION", 10, t.FAINT, weight=ft.FontWeight.W_700),
+        rows = [self.row("入门指南", "guide", 0)]
+        rows.append(ft.Container(t.text("文档", 10, t.FAINT, weight=ft.FontWeight.W_700),
                                  padding=ft.Padding(10, 14, 8, 4)))
 
         def walk(items, depth):

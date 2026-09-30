@@ -1,41 +1,33 @@
-# Start here
+# 入门指南
 
-pokeldn trades with Pokemon games on a Switch or Switch 2 over local wireless. An ESP32 board on USB is
-the radio. Nothing is installed on the console.
+pokeldn 通过本地无线通信与 Switch 或 Switch 2 上的宝可梦游戏交换。USB 连接的 ESP32 设备充当无线设备，无需在游戏机上安装软件。
 
-## What you need
+## 所需物品
 
-- A classic ESP32 board (ESP32-D0WD, WROOM-32E) with a CP2102 or CH340 USB chip. It is 2.4 GHz only.
-- A USB data cable. Charge-only cables show no port.
-- `prod.keys` dumped from your own Switch. The app asks for it once.
-- One of the seven games on the Games page.
+- 采用 CP2102 或 CH340 USB 芯片的经典 ESP32 设备（ESP32-D0WD、WROOM-32E）；仅支持 2.4 GHz。此分支也支持刷入专用固件的 ESP32-S3。
+- USB 数据线。仅支持充电的线不会显示串口。
+- 从您自己的 Switch 导出的 `prod.keys`；程序首次启动时会提示选择。
+- “游戏”页列出的任一游戏。
 
-## First run
+## 首次使用
 
-1. Board: plug the board in, select it, press Flash. Identify blinks its blue LED, so two boards can be
-   told apart.
-2. Games: pick a game and a tool.
-3. Pokemon to offer: search a species and press Build. PKHeX makes a legal one for that game, owned by
-   the trainer in Settings.
-4. Follow the steps under On the console, then press Start.
+1. 在“设备”页连接并选择设备，然后点击“刷写”。“识别”会让蓝色指示灯闪烁，便于区分多台设备。
+2. 在“游戏”页选择游戏和工具。
+3. 在“要交换的宝可梦”中搜索种类并点击“生成”。PKHeX 会依据“设置”页的训练家信息生成适用于该游戏的合法宝可梦。
+4. 按照“游戏机操作”中的步骤操作，再点击“开始”。
 
-The Pokemon the console sends you are saved in `Documents/pokeldn/Received`.
+游戏机传来的宝可梦会保存在 `Documents/pokeldn/Received`。
 
-## Basic and All options
+## 常用与全部选项
 
-Basic shows the fields most runs need; the tested settings for each game are applied underneath. All
-options lists every option the game's session accepts, with its own help text. A value set there
-overrides the Basic field.
+“常用”显示大多数运行需要填写的字段，并应用各游戏经过测试的默认设置。“全部选项”列出入口程序支持的其他参数。这里填写的值会覆盖“常用”中的同名参数。
 
-## Your own Pokemon files
+## 使用自己的宝可梦文件
 
-Or use a Pokemon file takes a file exported from PKHeX. The app checks it with PKHeX and shows whether
-it is legal before you offer it. An illegal Pokemon can crash the other game when it is drawn.
+点击“或使用宝可梦文件”可选择 PKHeX 导出的文件。程序会先用 PKHeX 检查合法性。不合法的宝可梦在对方游戏显示时可能导致崩溃。
 
-## When a run fails
+## 运行失败时
 
-- Stop, then back out of the console's search screen and search again. Most games keep a stale session
-  for a short while.
-- Change one thing per run.
-- Settings, Session records opens the recording of every session; attach the latest one to a bug
-  report.
+- 点击“停止”，退出游戏机上的搜索画面，再重新搜索。许多游戏会短暂保留旧会话。
+- 每次只调整一项设置。
+- 在“设置”页打开“会话记录”，提交问题报告时附上最新的记录文件。

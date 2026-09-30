@@ -39,7 +39,7 @@ class Log:
         color = t.RED if ("traceback" in lower or "error" in lower or "failed" in lower) else \
             t.GREEN if ("complete" in lower or "success" in lower) else \
             t.BLUE if line.startswith("[app]") else "#B9BCC4"
-        return ft.Text(line, size=11.5, color=color, font_family=t.MONO, selectable=True)
+        return ft.Text(line, size=11.5, color=color, font_family="Noto Sans SC", selectable=True)
 
     def add(self, line: str) -> None:
         with self.lock:
@@ -77,7 +77,7 @@ class PathField:
         self.on_change = on_change
         self.field = t.field(value=value, mono=True, expand=True, on_change=lambda e: self._changed(e.control.value))
         icon = ft.Icons.FOLDER_OPEN_OUTLINED if mode == "dir" else ft.Icons.FILE_OPEN_OUTLINED
-        self.control = ft.Row([self.field, t.icon_button(icon, self._browse, "Browse")], spacing=6)
+        self.control = ft.Row([self.field, t.icon_button(icon, self._browse, "浏览")], spacing=6)
 
     def _changed(self, value: str) -> None:
         if self.on_change:

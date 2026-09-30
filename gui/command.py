@@ -89,5 +89,5 @@ def missing_offer(tool: Tool, values: dict) -> str:
         if field.kind == "pokemon" and field.required and applies(field, tool, values):
             path = offer_file(value_of(field, values))
             if not path or not os.path.isfile(path):
-                return "Build the Pokemon to offer first."
+                return "请先生成要交换的宝可梦。"
     return ""

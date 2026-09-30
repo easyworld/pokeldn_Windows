@@ -7,8 +7,8 @@ from pathlib import Path
 from gui.paths import DATA, RECEIVED
 
 PATH = DATA / "settings.json"
-LANGUAGES = (("2", "English"), ("3", "French"), ("5", "German"), ("4", "Italian"), ("7", "Spanish"),
-             ("1", "Japanese"), ("8", "Korean"))
+LANGUAGES = (("2", "英语"), ("3", "法语"), ("5", "德语"), ("4", "意大利语"), ("7", "西班牙语"),
+             ("1", "日语"), ("8", "韩语"))
 
 
 @dataclass

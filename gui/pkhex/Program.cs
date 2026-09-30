@@ -8,7 +8,7 @@ using System.Text.Json.Nodes;
 using PKHeX.Core;
 using static PKHeX.Core.GameVersion;
 
-var strings = GameInfo.GetStrings("en");
+var strings = GameInfo.GetStrings("zh-Hans");
 var games = new Dictionary<string, Game>
 {
     ["frlg"] = new([FR, LG, E, R, S], PersonalTable.FR, EntityContext.Gen3, () => new PK3(), DecryptedParty),
@@ -35,7 +35,7 @@ while (Console.ReadLine() is { } line)
             "names" => Names(game, (string)request["list"]!),
             "make" => Make(game, request),
             "check" => Check(game, Convert.FromBase64String((string)request["data"]!)),
-            var other => throw new ArgumentException($"unknown command {other}"),
+            var other => throw new ArgumentException($"未知命令：{other}"),
         };
         reply["ok"] = true;
     }
@@ -83,7 +83,7 @@ JsonObject Names(Game game, string list)
                 Add(b, strings.balllist[b]);
             break;
         default:
-            throw new ArgumentException($"unknown list {list}");
+            throw new ArgumentException($"未知列表：{list}");
     }
     return new JsonObject { ["names"] = names };
 }
@@ -140,8 +140,8 @@ JsonObject Make(Game game, JsonObject request)
     }
     var name = strings.specieslist[species];
     throw new InvalidOperationException(firstProblem is null
-        ? $"PKHeX has no legal {name} for this game."
-        : $"No legal {name} with these choices. {firstProblem}");
+        ? $"PKHeX 没有适用于此游戏的合法{name}。"
+        : $"当前选择无法生成合法的{name}。{firstProblem}");
 }
 
 JsonObject Check(Game game, byte[] data)
@@ -149,7 +149,7 @@ JsonObject Check(Game game, byte[] data)
     if (game.Context == EntityContext.Gen7b && data.Length < 0x104)
         data = [.. data, .. new byte[0x104 - data.Length]];
     var pk = EntityFormat.GetFromBytes(data, game.Context)
-             ?? throw new InvalidDataException($"{data.Length} bytes are not a Pokemon of this game.");
+             ?? throw new InvalidDataException($"这 {data.Length} 个字节不是此游戏支持的宝可梦数据。");
     // A box record carries no party stats; the receiving console computes them, so do the same.
     if (pk is PB7 pb7)
     {

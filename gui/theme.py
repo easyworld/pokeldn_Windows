@@ -21,13 +21,15 @@ FLOAT = [ft.BoxShadow(blur_radius=30, offset=ft.Offset(0, 12), color=ft.Colors.w
 
 def app_theme() -> ft.Theme:
     return ft.Theme(
+        font_family="Noto Sans SC",
         color_scheme_seed=BLUE,
         color_scheme=ft.ColorScheme(primary=BLUE, secondary=RED, surface=PANEL, on_surface=TEXT,
                                     error=RED, outline=BORDER, surface_container_highest=FIELD),
         divider_color=BORDER,
         scrollbar_theme=ft.ScrollbarTheme(thickness=6, radius=3, thumb_color=HOVER),
         tooltip_theme=ft.TooltipTheme(decoration=ft.BoxDecoration(bgcolor=FIELD, border_radius=6),
-                                     text_style=ft.TextStyle(color=TEXT, size=12)),
+                                     text_style=ft.TextStyle(color=TEXT, size=12,
+                                                             font_family="Noto Sans SC")),
     )
 
 
@@ -92,7 +94,8 @@ def field(label: str = "", value: str = "", hint: str = "", mono: bool = False, 
     style = ft.TextStyle(size=13, color=TEXT, font_family=MONO if mono else None)
     return ft.TextField(value=value, label=label or None, hint_text=hint or None, text_style=style,
                         label_style=ft.TextStyle(size=12, color=MUTED), dense=True,
-                        hint_style=ft.TextStyle(size=13, color=FAINT), bgcolor=FIELD, filled=True,
+                        hint_style=ft.TextStyle(size=13, color=FAINT, font_family="Noto Sans SC"),
+                        bgcolor=FIELD, filled=True,
                         border=_border(), cursor_color=BLUE,
                         content_padding=ft.Padding(12, 10, 12, 10), **kwargs)
 
@@ -110,7 +113,7 @@ def button(label: str, on_click=None, icon=None, color: str = BLUE, filled: bool
         bgcolor={ft.ControlState.DISABLED: FIELD, ft.ControlState.DEFAULT: color if filled else FIELD},
         color={ft.ControlState.DISABLED: FAINT, ft.ControlState.DEFAULT: "#FFFFFF" if filled else TEXT},
         shape=ft.RoundedRectangleBorder(radius=10), padding=ft.Padding(16, 12, 16, 12),
-        text_style=ft.TextStyle(size=13, weight=ft.FontWeight.W_600),
+        text_style=ft.TextStyle(size=13, weight=ft.FontWeight.W_600, font_family="Noto Sans SC"),
         overlay_color=ft.Colors.with_opacity(0.12, "#FFFFFF"),
         elevation={ft.ControlState.DISABLED: 0, ft.ControlState.DEFAULT: 6 if filled else 0},
         shadow_color=ft.Colors.with_opacity(0.6, color))

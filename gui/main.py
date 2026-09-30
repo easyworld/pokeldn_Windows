@@ -21,15 +21,16 @@ from gui.app import App  # noqa: E402
 from gui.paths import ROOT  # noqa: E402
 
 PAGES = (
-    ("games", "Games", ft.Icons.SPORTS_ESPORTS_OUTLINED, ft.Icons.SPORTS_ESPORTS),
-    ("board", "Board", ft.Icons.MEMORY_OUTLINED, ft.Icons.MEMORY),
-    ("docs", "Docs", ft.Icons.MENU_BOOK_OUTLINED, ft.Icons.MENU_BOOK),
+    ("games", "游戏", ft.Icons.SPORTS_ESPORTS_OUTLINED, ft.Icons.SPORTS_ESPORTS),
+    ("board", "设备", ft.Icons.MEMORY_OUTLINED, ft.Icons.MEMORY),
+    ("docs", "文档", ft.Icons.MENU_BOOK_OUTLINED, ft.Icons.MENU_BOOK),
 )
-SETTINGS = ("settings", "Settings", ft.Icons.SETTINGS_OUTLINED, ft.Icons.SETTINGS)
+SETTINGS = ("settings", "设置", ft.Icons.SETTINGS_OUTLINED, ft.Icons.SETTINGS)
 
 
 def main(page: ft.Page) -> None:
     page.title = "pokeldn"
+    page.fonts = {"Noto Sans SC": "NotoSansSC.ttf"}
     page.theme_mode = ft.ThemeMode.DARK
     page.theme = page.dark_theme = t.app_theme()
     page.bgcolor = t.BG
@@ -117,16 +118,16 @@ def welcome(app: App) -> None:
 
     app.page.show_dialog(ft.AlertDialog(
         modal=True, bgcolor=t.PANEL, shape=ft.RoundedRectangleBorder(radius=16),
-        title=t.text("Welcome to pokeldn", 18, weight=ft.FontWeight.W_700),
+        title=t.text("欢迎使用 pokeldn", 18, weight=ft.FontWeight.W_700),
         content=ft.Container(ft.Column([
             ft.Image(src="logo.svg", width=44, height=48),
-            t.text("pokeldn needs your Switch's prod.keys, dumped from your own console. It decrypts the "
-                   "local wireless messages and never leaves this computer.", 13, t.MUTED),
-            t.text("Everything else is included.", 13, t.MUTED),
+            t.text("pokeldn 需要从您自己的 Switch 导出的 prod.keys，用于解密本地无线通信。"
+                   "密钥不会离开这台电脑。", 13, t.MUTED),
+            t.text("其他所需文件均已包含。", 13, t.MUTED),
         ], spacing=10, tight=True), width=420),
-        actions=[ft.TextButton("Later", on_click=lambda e: app.page.pop_dialog(),
+        actions=[ft.TextButton("稍后", on_click=lambda e: app.page.pop_dialog(),
                                style=ft.ButtonStyle(color=t.MUTED)),
-                 t.button("Choose prod.keys", choose, ft.Icons.KEY_ROUNDED)],
+                 t.button("选择 prod.keys", choose, ft.Icons.KEY_ROUNDED)],
     ))
 
 
